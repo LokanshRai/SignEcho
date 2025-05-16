@@ -1,0 +1,63 @@
+#include <nrfx_spi.h>
+#include <zephyr/drivers/spi.h>
+
+//LOGGING DEFINES
+#define MAIN_LOG MAIN_LOG
+#define PKTB_LOG PKTB_LOG
+#define BLE_LOG  BLE_LOG
+#define EMG_LOG  EMG_LOG
+#define IMU_LOG  IMU_LOG
+
+#define SPIOP	(SPI_WORD_SET(8) | SPI_TRANSFER_MSB) 
+
+#define SLEEP_TIME_MS 2
+#define ADC_SLEEP_TIME_MS 1
+#define TX_SLEEP_TIME_MS 10
+
+#define BIT_SHIFT 8
+#define READ_SIZE_SINGLE ((uint8_t)2)
+#define READ_SIZE_MULTIPLE ((uint8_t)3)
+#define SECONDS_PER_CAPTURE 4
+
+//GYROSCOPE CONTROL REGISTER
+#define CTRL2_G 0x11
+
+//ACCELEROMETER CONTROL REGISTER
+#define CTRL1_XL 0x10
+
+//GYROSCOPE REGISTERS
+#define OUTX_L_G 0x22
+#define OUTX_H_G 0x23
+#define OUTY_L_G 0x24
+#define OUTY_H_G 0x25
+#define OUTZ_L_G 0x26
+#define OUTZ_H_G 0x27
+
+//ACCELEROMETER REGISTERS
+#define OUTX_L_A 0x28
+#define OUTX_H_A 0x29
+#define OUTY_L_A 0x2A
+#define OUTY_H_A 0x2B
+#define OUTZ_L_A 0x2C
+#define OUTZ_H_A 0x2D
+
+//MISC REGISTERS
+#define READ_BIT 0x80
+#define WHO_AM_I 0x0F
+
+//BLE Defines
+#define DEVICE_NAME CONFIG_BT_DEVICE_NAME
+#define DEVICE_NAME_LEN (sizeof(DEVICE_NAME) - 1)
+#define CONN_STATUS_LED DK_LED2
+#define BT_UUID_REMOTE_SERV_VAL BT_UUID_128_ENCODE(0xe9ea0001, 0xe19b, 0x482d, 0x9293, 0xc7907585fc48)
+
+#define BT_UUID_MYSENSOR_VAL 	BT_UUID_128_ENCODE(0xe9ea0002, 0xe19b, 0x482d, 0x9293, 0xc7907585fc48)
+
+#define BT_UUID_REMOTE_SERVICE  BT_UUID_DECLARE_128(BT_UUID_REMOTE_SERV_VAL)
+#define BT_UUID_MYSENSOR        BT_UUID_DECLARE_128(BT_UUID_MYSENSOR_VAL)
+
+//packet builder defines
+#define payloadSizeInBytes 240
+
+//Other Peripheral Devices
+#define LED0 13
